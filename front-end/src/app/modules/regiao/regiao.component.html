@@ -1,6 +1,10 @@
-<section>
+<section class="content-item">
   <header>
     <h1>Regiões</h1>
-    <button mat-raised-button>Pick one</button>
+    <button type="button" mat-flat-button (click)="openDialog()">
+        <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
+        Cadastrar
+    </button>
   </header>
+  <app-table></app-table>
 </section>

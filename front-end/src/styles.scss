@@ -12,7 +12,7 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$fretefy-fullstack-primary: mat-palette($mat-indigo);
+$fretefy-fullstack-primary: mat-palette($mat-light-blue);
 $fretefy-fullstack-accent: mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -40,4 +40,12 @@ html, body {
     background-color: #dfe6e9;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Nunito Sans, Segoe UI, Helvetica Neue, Arial, sans-serif; }
+body { margin: 0 }
+
+:root{
+  --primary-color: #003250;
+  --secondary-color: #8ba1af;
+  --tertiary-color: #e7ecef;
+  // --quaternary-color: #e7ecef;
+  // --quinary-color: #f7f8f9;
+}

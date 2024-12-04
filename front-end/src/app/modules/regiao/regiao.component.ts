@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-regiao',
@@ -9,36 +9,44 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 
 export class RegiaoComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(NovaRegiaoDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
 }
 
-// @Component({
-//   selector: 'dialog-overview-example',
-//   templateUrl: 'dialog-overview-example.html',
-// })
+@Component({
+  selector: 'nova-regiao.component',
+  templateUrl: 'nova-regiao.component.html',
+})
 
-// export class DialogOverviewExample {
+export class NovaRegiaoDialog {
 
-//   animal: string;
-//   name: string;
+  animal: string;
+  name: string;
 
-//   constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) {}
 
-//   openDialog(): void {
-//     const dialogRef = this.dialog.open(DialogOverviewExample, {
-//       width: '250px',
-//       data: {name: this.name, animal: this.animal}
-//     });
+  openDialog(): void {
+    const dialogRef = this.dialog.open(NovaRegiaoDialog, {
+      width: '250px',
+      data: {name: this.name, animal: this.animal}
+    });
 
-//     dialogRef.afterClosed().subscribe(result => {
-//       console.log('The dialog was closed');
-//       this.animal = result;
-//     });
-//   }
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
 
-// }
+}
 
