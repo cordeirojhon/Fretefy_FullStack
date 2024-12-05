@@ -16,7 +16,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   dataSource: TableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['enabled', 'name', 'id'];
 
   ngOnInit() {
     this.dataSource = new TableDataSource();
@@ -24,7 +24,7 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator ? this.paginator : null;
     this.table.dataSource = this.dataSource;
   }
 }

@@ -6,32 +6,15 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 
 // TODO: Replace this with your own data model type
 export interface TableItem {
-  name: string;
   id: number;
+  name: string;
+  enabled: boolean;
 }
 
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: TableItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
+  {id: 1, name: 'Região Sul', enabled: true},
+  {id: 2, name: 'Grande Curitiba', enabled: false},
 ];
 
 /**
@@ -41,7 +24,7 @@ const EXAMPLE_DATA: TableItem[] = [
  */
 export class TableDataSource extends DataSource<TableItem> {
   data: TableItem[] = EXAMPLE_DATA;
-  paginator: MatPaginator;
+  paginator: MatPaginator | null;
   sort: MatSort;
 
   constructor() {
@@ -58,7 +41,7 @@ export class TableDataSource extends DataSource<TableItem> {
     // stream for the data-table to consume.
     const dataMutations = [
       observableOf(this.data),
-      this.paginator.page,
+      this.paginator ? this.paginator.page : observableOf({}),
       this.sort.sortChange
     ];
 
@@ -78,8 +61,8 @@ export class TableDataSource extends DataSource<TableItem> {
    * this would be replaced by requesting the appropriate data from the server.
    */
   private getPagedData(data: TableItem[]) {
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    return data.splice(startIndex, this.paginator.pageSize);
+    const startIndex = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
+    return data.splice(startIndex, this.paginator ? this.paginator.pageSize : data.length);
   }
 
   /**
@@ -96,6 +79,7 @@ export class TableDataSource extends DataSource<TableItem> {
       switch (this.sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
         case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'enabled': return compare(+a.enabled, +b.enabled, isAsc);
         default: return 0;
       }
     });
@@ -106,3 +90,4 @@ export class TableDataSource extends DataSource<TableItem> {
 function compare(a: string | number, b: string | number, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
+
