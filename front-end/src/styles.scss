@@ -49,3 +49,22 @@ body { margin: 0 }
   --quaternary-color: #e7f5fd;
   // --quinary-color: #f7f8f9;
 }
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  h1 {
+    margin-bottom: 0;
+    color: var(--secondary-color);
+    font-weight: 500;
+    font-size: 1.25rem;
+  }
+
+  .mat-button {
+    border-radius: 2rem;
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
+  }
+}

@@ -1,5 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { RegiaoComponent } from './regiao.component';
+import { CadastroComponent } from './cadastro/cadastro.component';
 
 const routes: Routes = [
   {
@@ -8,11 +9,11 @@ const routes: Routes = [
   },
   {
     path: 'nova-regiao',
-    component: RegiaoComponent
+    component: CadastroComponent
   },
   {
     path: ':id',
-    component: RegiaoComponent
+    component: CadastroComponent
   },
 ];
 

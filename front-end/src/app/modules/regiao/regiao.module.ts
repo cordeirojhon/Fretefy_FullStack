@@ -2,20 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegiaoComponent } from './regiao.component';
 import { RegiaoRoutingModule } from './regiao.routing';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TableModule } from "../../components/table/table.module";
+import { RouterModule } from '@angular/router';
+import { CadastroModule } from './cadastro/cadastro.module';
 
 @NgModule({
   imports: [
     CommonModule,
     RegiaoRoutingModule,
 
-    MatDialogModule,
     MatIconModule,
     MatButtonModule,
-    TableModule
+    TableModule,
+    RouterModule,
+    CadastroModule
 ],
   declarations: [RegiaoComponent],
   exports: [RegiaoComponent]

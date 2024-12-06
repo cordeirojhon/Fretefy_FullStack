@@ -1,10 +1,10 @@
-<section class="content-item">
+<section>
   <header>
     <h1>Regiões</h1>
-    <button type="button" mat-flat-button (click)="openDialog()">
+    <a mat-button mat-flat-button [routerLink]="['/regiao/nova-regiao']">
         <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
         Cadastrar
-    </button>
+    </a>
   </header>
   <app-table></app-table>
 </section>

@@ -1,0 +1,32 @@
+<section>
+  <header>
+    <h1>Cadastro de região</h1>
+  </header>
+  <form [formGroup]="registerRegion" (ngSubmit)="sendForm()">
+    <div>
+      <label for="name">Nome:</label>
+      <input id="name" formControlName="name" />
+      <div *ngIf="registerRegion.get('name').invalid && registerRegion.get('name').touched">
+        O nome é obrigatório.
+      </div>
+    </div>
+
+    <div formArrayName="cities">
+      <div *ngFor="let city of cities.controls; let i = index" [formGroupName]="i">
+        <label for="city">Cidade:</label>
+        <input id="city" formControlName="city" />
+        <label for="state">UF:</label>
+        <input id="state" formControlName="state" />
+        <button type="button" (click)="removeCity(i)">Remover</button>
+      </div>
+    </div>
+
+    <button type="button" (click)="addCity()">Adicionar Cidade</button>
+
+    <div>
+      <button type="submit" [disabled]="registerRegion.invalid">Salvar</button>
+      <button type="button" (click)="cancelForm()">Cancelar</button>
+    </div>
+  </form>
+
+</section>
