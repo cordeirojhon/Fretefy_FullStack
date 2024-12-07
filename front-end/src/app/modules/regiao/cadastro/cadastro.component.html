@@ -3,25 +3,54 @@
     <h1>Cadastro de região</h1>
   </header>
   <form [formGroup]="registerRegion" (ngSubmit)="sendForm()">
-    <div>
-      <label for="name">Nome:</label>
-      <input id="name" formControlName="name" />
-      <div *ngIf="registerRegion.get('name').invalid && registerRegion.get('name').touched">
+    <mat-form-field class="example-full-width" appearance="outline" size="small">
+      <mat-label>Nome</mat-label>
+      <input
+        type="text"
+        placeholder="Nome"
+        aria-label="Nome"
+        matInput
+        formControlName="name"
+      >
+      <mat-error *ngIf="registerRegion.get('name').invalid && registerRegion.get('name').touched">
         O nome é obrigatório.
-      </div>
-    </div>
+      </mat-error>
+    </mat-form-field>
 
     <div formArrayName="cities">
       <div *ngFor="let city of cities.controls; let i = index" [formGroupName]="i">
-        <label for="city">Cidade:</label>
-        <input id="city" formControlName="city" />
-        <label for="state">UF:</label>
-        <input id="state" formControlName="state" />
+        <mat-form-field class="example-full-width" appearance="outline" size="small">
+          <mat-label>Cidade</mat-label>
+          <input
+            type="text"
+            placeholder="Cidade"
+            aria-label="Cidade"
+            matInput
+            formControlName="city"
+            [matAutocomplete]="auto"
+          >
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCity">
+            <mat-option *ngFor="let theCity of allCities | async" [value]="theCity">
+              {{theCity.city}} - {{theCity.state}}
+            </mat-option>
+          </mat-autocomplete>
+
+          <!-- TODO: tratar demais mensagens de erro -->
+          <mat-error *ngIf="city.get('city').invalid && city.get('city').touched">
+            O nome da cidade é obrigatório. {{city.get('city').errors | json}}
+          </mat-error>
+          <mat-error *ngIf="city.get('city').invalid && city.get('city').errors?.duplicate">
+            Cidade já adicionada.
+          </mat-error>
+          <mat-error *ngIf="city.get('city').invalid && city.get('city').errors?.cityInvalid">
+            Cidade inválida.
+          </mat-error>
+        </mat-form-field>
+
         <button type="button" (click)="removeCity(i)">Remover</button>
       </div>
     </div>
-
-    <button type="button" (click)="addCity()">Adicionar Cidade</button>
+    <button type="button" (click)="addCity()" [disabled]="registerRegion.invalid">Adicionar Cidade</button>
 
     <div>
       <button type="submit" [disabled]="registerRegion.invalid">Salvar</button>

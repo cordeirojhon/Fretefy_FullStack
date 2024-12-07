@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { RegiaoService } from '../../../services/regiao.service';
+
+import { uniqueValidator, cityObjectValidator } from '../../../validators/cities.validator';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cadastro',
@@ -8,22 +13,31 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
   styleUrls: ['./cadastro.component.scss']
 })
 
-// TODO: aplicar validacao
-
 export class CadastroComponent implements OnInit {
+  constructor(private regiaoService: RegiaoService) { }
+
   registerRegion: FormGroup;
+  allCities: Observable<object[]>;
+
   ngOnInit(): void {
     this.registerRegion = new FormGroup({
       name: new FormControl('', Validators.required),
-      cities: new FormArray([this.createCity()])
+      cities: new FormArray([this.createCity()], uniqueValidator('city', 'city'))
     });
+
+    this.allCities = this.cities.controls[0].get('city').valueChanges.pipe(
+      startWith(''),
+      map(value => this.regiaoService.searchCities(value))
+    )
   }
 
   createCity(): FormGroup {
     return new FormGroup({
-      city: new FormControl('', Validators.required),
-      state: new FormControl('', Validators.required)
-    });
+      city: new FormControl('', Validators.required)
+    }, { validators: cityObjectValidator });
+  }
+  displayCity(city: any): string {
+    return city ? city.city : '';
   }
 
   get cities(): FormArray {
@@ -31,7 +45,6 @@ export class CadastroComponent implements OnInit {
   }
 
   addCity(): void {
-    console.log('add ', this.registerRegion.value);
     this.cities.push(this.createCity());
   }
 
@@ -39,13 +52,16 @@ export class CadastroComponent implements OnInit {
     this.cities.removeAt(index);
   }
 
-  sendForm(): void {
-    console.log(this.registerRegion.value);
-  }
-
   cancelForm(): void {
     console.log('cancel ', this.registerRegion.value);
-    // this.registerRegion.reset();
+    this.registerRegion.reset();
+  }
+
+  sendForm(): void {
+    if (this.registerRegion.valid) {
+      this.regiaoService.postRegion(this.registerRegion.value);
+    }
   }
 }
+
 
