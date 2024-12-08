@@ -1,0 +1,17 @@
+.mat-card {
+  header {
+    border-bottom: 1px solid #ececec;
+    padding: 1rem;
+  }
+}
+
+.mat-button {
+  &[type="reset"] {
+    background-color: var(--tertiary-color);
+  }
+
+  &[type="submit"]:not(:disabled) {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+}

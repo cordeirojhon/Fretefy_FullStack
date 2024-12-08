@@ -1,61 +1,98 @@
 <section>
-  <header>
-    <h1>Cadastro de região</h1>
-  </header>
-  <form [formGroup]="registerRegion" (ngSubmit)="sendForm()">
-    <mat-form-field class="example-full-width" appearance="outline" size="small">
-      <mat-label>Nome</mat-label>
-      <input
-        type="text"
-        placeholder="Nome"
-        aria-label="Nome"
-        matInput
-        formControlName="name"
-      >
-      <mat-error *ngIf="registerRegion.get('name').invalid && registerRegion.get('name').touched">
-        O nome é obrigatório.
-      </mat-error>
-    </mat-form-field>
+  <mat-card class="p-0">
+    <header>
+      <h1 class="mb-0">Cadastro de região</h1>
+    </header>
+    <form [formGroup]="registerRegion" (ngSubmit)="sendForm()">
+      <mat-card-content>
+        <mat-card class="rounded-0 elevation-0">
+          <mat-card-content class="mb-0">
+            <mat-form-field class="example-full-width" appearance="outline" size="small" class="w-full">
+              <mat-label>Nome da região</mat-label>
+              <input
+                type="text"
+                placeholder="Nome"
+                aria-label="Nome"
+                matInput
+                formControlName="name"
+              >
+              <mat-error *ngIf="registerRegion.get('name').invalid && registerRegion.get('name').errors?.required">
+                O nome é obrigatório.
+              </mat-error>
+              <mat-error *ngIf="registerRegion.get('name').invalid && registerRegion.get('name').errors?.duplicate">
+                Nome já cadastrado.
+              </mat-error>
+            </mat-form-field>
 
-    <div formArrayName="cities">
-      <div *ngFor="let city of cities.controls; let i = index" [formGroupName]="i">
-        <mat-form-field class="example-full-width" appearance="outline" size="small">
-          <mat-label>Cidade</mat-label>
-          <input
-            type="text"
-            placeholder="Cidade"
-            aria-label="Cidade"
-            matInput
-            formControlName="city"
-            [matAutocomplete]="auto"
-          >
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCity">
-            <mat-option *ngFor="let theCity of allCities | async" [value]="theCity">
-              {{theCity.city}} - {{theCity.state}}
-            </mat-option>
-          </mat-autocomplete>
+            <h2 class="heading-color text-md">Locais da região</h2>
 
-          <!-- TODO: tratar demais mensagens de erro -->
-          <mat-error *ngIf="city.get('city').invalid && city.get('city').touched">
-            O nome da cidade é obrigatório. {{city.get('city').errors | json}}
-          </mat-error>
-          <mat-error *ngIf="city.get('city').invalid && city.get('city').errors?.duplicate">
-            Cidade já adicionada.
-          </mat-error>
-          <mat-error *ngIf="city.get('city').invalid && city.get('city').errors?.cityInvalid">
-            Cidade inválida.
-          </mat-error>
-        </mat-form-field>
+            <div formArrayName="cities">
+              <div class="flex items-start" *ngFor="let city of cities.controls; let i = index" [formGroupName]="i">
 
-        <button type="button" (click)="removeCity(i)">Remover</button>
-      </div>
-    </div>
-    <button type="button" (click)="addCity()" [disabled]="registerRegion.invalid">Adicionar Cidade</button>
+                <!-- TODO: melhorar autocomplete em loop. [matAutocomplete] precisa ser dinamico -->
 
-    <div>
-      <button type="submit" [disabled]="registerRegion.invalid">Salvar</button>
-      <button type="button" (click)="cancelForm()">Cancelar</button>
-    </div>
-  </form>
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Cidade</mat-label>
+                  <input
+                    type="text"
+                    placeholder="Cidade"
+                    aria-label="Cidade"
+                    matInput
+                    formControlName="city"
+                    [matAutocomplete]="auto"
+                  >
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCity">
+                    <mat-option *ngFor="let theCity of allCities | async" [value]="theCity">
+                      {{theCity.city}} - {{theCity.state}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                  <mat-error *ngIf="city.invalid && city.get('city').errors.required">
+                    O nome da cidade é obrigatório.
+                  </mat-error>
+                  <mat-error *ngIf="city.get('city').invalid && city.get('city').errors?.duplicate">
+                    Cidade já adicionada.
+                  </mat-error>
+                  <mat-error *ngIf="city.invalid && city.get('city').errors.invalidValue">
+                    Nome inválido.
+                  </mat-error>
+                </mat-form-field>
+
+                <button
+                  mat-button
+                  mat-text-button
+                  type="button"
+                  (click)="removeCity(i)"
+                  class="mt-1"
+                >
+                  <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions class="justify-center">
+            <button
+              mat-button
+              mat-flat-button
+              type="button"
+              (click)="addCity()"
+              [disabled]="registerRegion.invalid"
+              class="pill"
+            >
+              <mat-icon aria-hidden="false" aria-label="Example home icon">add_circle</mat-icon>
+              Adicionar local
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-card-content>
+      <mat-card-actions class="border-t m-0 justify-end">
+        <button mat-button type="reset" (click)="cancelForm()">Cancelar</button>
+        <button mat-button type="submit" [disabled]="registerRegion.invalid">Salvar</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
 
 </section>

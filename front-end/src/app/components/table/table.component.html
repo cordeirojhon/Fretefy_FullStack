@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-content>
-    <table mat-table matSort aria-label="Tabela de regiões">
+    <table *ngIf="dataSource.data.length" mat-table matSort aria-label="Tabela de regiões">
       <ng-container matColumnDef="enabled">
         <th class="sort-cell" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
         <td mat-cell *matCellDef="let row">
@@ -20,11 +20,11 @@
             <mat-icon aria-hidden="false" aria-label="Editar região">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <a mat-menu-item [routerLink]="['/regiao', row.id]">
+            <a mat-menu-item [routerLink]="['/regiao', row.id]" [disabled]="!row.enabled">
               <mat-icon>edit</mat-icon>
               <span>Editar</span>
             </a>
-            <button type="button" mat-menu-item>
+            <button type="button" mat-menu-item (click)="toggleStatus(row)">
               <mat-icon>{{row.enabled ? 'toggle_on' : 'toggle_off'}}</mat-icon>
               <span>{{row.enabled ? 'Desativar' : 'Ativar'}}</span>
             </button>
@@ -35,6 +35,10 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="{{row.enabled ? 'enabled' : 'disabled'}}"></tr>
     </table>
+
+    <ng-container *ngIf="!dataSource.data.length">
+      <p class="p-1">Nenhuma região cadastrada.</p>
+    </ng-container>
 
     <ng-container>
       <mat-paginator #paginator

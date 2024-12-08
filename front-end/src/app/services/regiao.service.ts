@@ -3,24 +3,36 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class RegiaoService {
-
+export class RegionService {
   constructor() { }
 
   // Para um teste sem API, decidi salvar as regioes no LocalStorage
-  postRegion(regiao: any): void {
-    let regioes = JSON.parse(localStorage.getItem('regioes')) || [];
-    regioes.push(regiao);
-    localStorage.setItem('regioes', JSON.stringify(regioes));
+  postRegion(region: object): void {
+    let regions = JSON.parse(localStorage.getItem('regions')) || [];
+
+    // Gera um id aleatorio
+    const generatedId = Math.random().toString(36).slice(2, 11);
+    regions.push({ ...region, id: generatedId });
+    localStorage.setItem('regions', JSON.stringify(regions));
   }
 
+  updateRegion(region: object, id: string): void {
+    const regions = JSON.parse(localStorage.getItem('regions')) || [];
+    const index = regions.findIndex((r: any) => r.id === id);
+    regions[index] = { ...region, id };
+    localStorage.setItem('regions', JSON.stringify(regions));
+  }
 
-  getRegions(): any[] {
-    return JSON.parse(localStorage.getItem('regioes')) || [];
+  static getRegions(): { id: string, enabled: boolean, name: string, cities: { id: number, city: string, state: string }[] }[] {
+    return JSON.parse(localStorage.getItem('regions')) || [];
+  }
+
+  getRegionById(id: string): { id: string, enabled: boolean, name: string, cities: { id: number, city: string, state: string }[] } {
+    return RegionService.getRegions().find(r => r.id === id);
   }
 
   // Simula cidades cadastradas na base
-  allCities(): any[] {
+  allCities(): Array<{ id: number, city: string, state: string }> {
     return [
       { id: 1, city: 'São Paulo', state: 'SP' },
       { id: 2, city: 'Rio de Janeiro', state: 'RJ' },
@@ -64,6 +76,5 @@ export class RegiaoService {
 
     return this.allCities()
       .filter(city => city.city.toLowerCase().includes(filter.toLowerCase()))
-      .slice(0, 5); // retorna os 5 primeiros
   }
 }

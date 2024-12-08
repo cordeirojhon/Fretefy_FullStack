@@ -62,9 +62,96 @@ header {
     font-size: 1.25rem;
   }
 
-  .mat-button {
+}
+.fretefy{
+  .mat-button.pill {
     border-radius: 2rem;
-    background-color: var(--tertiary-color);
+    &:not(:disabled) {
+      background-color: var(--tertiary-color);
+      color: var(--primary-color);
+    }
+  }
+  .flex {
+    display: flex;
+  }
+
+  .items {
+    &-start {
+      align-items: start;
+    }
+
+    &-center {
+      align-items: center;
+    }
+  }
+
+  .justify {
+    &-center {
+      text-align: center;
+    }
+
+    &-between {
+      justify-content: space-between;
+    }
+
+    &-end {
+      text-align: right;
+    }
+  }
+  .p{
+    &-0 {
+      padding: 0;
+    }
+    &-1 {
+      padding: 1rem;
+    }
+  }
+
+  .rounded-0 {
+    border-radius: 0;
+  }
+
+  .elevation-0 {
+    box-shadow: none;
+  }
+
+  .m {
+    &-0 {
+      margin: 0;
+    }
+
+    &b-0 {
+      margin-bottom: 0;
+    }
+
+    &t-1 {
+      margin-top: 0.5rem;
+    }
+    &b{
+      &-1 {
+        margin-bottom: 0.5rem;
+      }
+      &-2 {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .border-t {
+    border-top: 1px solid #ececec;
+  }
+
+  .heading-color {
     color: var(--primary-color);
   }
+
+  .text-md {
+    font-size: 1rem;
+  }
+
+  .w-full {
+    width: 100%;
+  }
 }
+
+
